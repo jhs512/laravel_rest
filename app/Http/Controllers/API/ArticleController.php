@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Article;
+use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -54,7 +55,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+        return new ArticleResource($article);
     }
 
     /**
