@@ -42,9 +42,21 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleSaveRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $article = new Article();
+        $article->user_id = auth()->user()->id;
+        $article->title = $validated['title'];
+        $article->body = $validated['body'];
+
+        if ($request->hasFile('img_1')) {
+            $article->img_1 = $request->file('img_1')->store('article/' . date('Y/m/d'), 'public');
+        }
+
+        $article->save();
+
+        return response()->json(['status' => 'OK']);
     }
 
     /**
