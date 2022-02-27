@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ArticleSaveRequest extends FormRequest
@@ -30,5 +32,16 @@ class ArticleSaveRequest extends FormRequest
             'img_1' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'img_1__remove' => 'in:Y',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        if ($this->wantsJson()) {
+            throw new HttpResponseException(response()->json([
+                'success'   => false,
+                'message'   => 'Validation errors',
+                'data'      => $validator->errors()
+            ]));
+        }
     }
 }

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Article;
-use App\Http\Resources\ArticleResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ArticleSaveRequest;
 use App\Http\Resources\ArticleCollection;
@@ -56,7 +57,7 @@ class ArticleController extends Controller
 
         $article->save();
 
-        return response()->json(['status' => 'OK']);
+        return response()->json(['resultCode' => 'S-1', 'msg' => '생성되었습니다.'], Response::HTTP_CREATED);
     }
 
     /**
@@ -101,7 +102,7 @@ class ArticleController extends Controller
 
         $article->save();
 
-        response()->json(['success' => 'success'], 200);
+        return response()->json(['resultCode' => 'S-1', 'msg' => '수정되었습니다.']);
     }
 
     /**
@@ -112,6 +113,12 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        if ($article->img_1) {
+            Storage::disk('public')->delete($article->img_1);
+        }
+
+        $article->delete();
+
+        return response()->json(['resultCode' => 'S-1', 'msg' => '삭제되었습니다.']);
     }
 }

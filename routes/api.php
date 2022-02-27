@@ -18,14 +18,17 @@ use App\Http\Controllers\API\ArticleController;
 Route::apiResource('articles', ArticleController::class);
 
 Route::group([
-
-    'middleware' => 'api',
-    'prefix' => 'auth'
-
+    'prefix' => 'articles'
 ], function () {
+    Route::post('{article}', [ArticleController::class, 'update']);
+});
 
+Route::group([
+    'prefix' => 'auth'
+], function () {
+    Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::post('me', [AuthController::class, 'me']);
+    Route::get('me', [AuthController::class, 'me']);
 });
