@@ -32,7 +32,7 @@ class ArticleController extends Controller
             $articles = $articles->orWhere('body', 'like', "%{$request->input('search_keyword')}%");
         }
 
-        $articles = $articles->paginate(3)->withQueryString();
+        $articles = $articles->paginate(30)->withQueryString();
 
         return new ArticleCollection($articles);
     }
