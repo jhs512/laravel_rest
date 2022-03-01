@@ -18,6 +18,10 @@ class JwtMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if ($request->path() == 'api/auth/refresh') {
+            return $next($request);
+        }
+
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
