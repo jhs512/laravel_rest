@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\Repository;
 use App\Auth\UserProviderDecorator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
